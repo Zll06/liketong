@@ -1,8 +1,17 @@
-// import Popper from "element-ui/src/utils/vue-popper";
+<!--
+ * @Name: Tooltip
+ * @Module:
+ * @Desc:
+ * @Path: src/components/tooltip
+ * @Author: zhangjiaqi
+ * @Date: 2024/12/26
+-->
+
+<script>
 import _ from "lodash";
 import Vue from "vue";
-import popperMixin from "@/components/tooltip/popper.mixin";
-// import {create}
+import popperMixin from "./popper.mixin";
+import TooltipOptions from "./TooltipOptions.vue";
 
 const isServer = Vue.prototype.$isServer;
 
@@ -84,7 +93,7 @@ function removeClass(el, cls) {
 }
 
 export default {
-  name: "ElTooltip",
+  name: "Tooltip",
   mixins: [popperMixin],
   props: {
     openDelay: {
@@ -152,31 +161,17 @@ export default {
 
   render(h) {
     if (this.popperVM) {
-      this.popperVM.node = (
-        <transition name={this.transition} onAfterLeave={this.doDestroy}>
-          <div
-            onMouseleave={() => {
-              this.setExpectedState(false);
-              this.debounceClose();
-            }}
-            onMouseenter={() => {
-              this.setExpectedState(true);
-            }}
-            ref="popper"
-            role="tooltip"
-            id={this.tooltipId}
-            aria-hidden={this.disabled || !this.showPopper ? "true" : "false"}
-            v-show={!this.disabled && this.showPopper}
-            class={[
-              "el-tooltip__popper",
-              "is-" + this.effect,
-              this.popperClass,
-            ]}
-          >
-            {this.$slots.content || this.content}
-          </div>
-        </transition>
-      );
+      this.popperVM.node = h(TooltipOptions, {
+        doDestroy: this.doDestroy,
+        debounceClose: this.debounceClose,
+        setExpectedState: this.setExpectedState,
+        showPopper: this.showPopper,
+        disabled: this.disabled,
+        effect: this.effect,
+        arrowOffset: this.arrowOffset,
+        popperClass: this.popperClass,
+        transition: this.transition,
+      });
     }
 
     const firstElement = this.getFirstElement();
@@ -322,3 +317,6 @@ export default {
     }
   },
 };
+</script>
+
+<style scoped lang="scss"></style>
