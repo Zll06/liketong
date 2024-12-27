@@ -19,7 +19,7 @@
       v-show="!disabled && showPopper"
       :class="['el-tooltip__popper', 'is-' + effect, popperClass]"
     >
-      {this.$slots.content || this.content}
+      <slot name="content">{{ content }}</slot>
     </div>
   </transition>
 </template>
@@ -33,6 +33,7 @@ export default {
     setExpectedState: Function,
     showPopper: Boolean,
     disabled: Boolean,
+    content: String,
     effect: {
       type: String,
       default: "dark",

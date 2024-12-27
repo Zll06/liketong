@@ -171,6 +171,7 @@ export default {
         arrowOffset: this.arrowOffset,
         popperClass: this.popperClass,
         transition: this.transition,
+        content: this.content
       });
     }
 
