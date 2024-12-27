@@ -14,8 +14,8 @@
       @mouseenter="onMouseenter"
       ref="popper"
       role="tooltip"
-      id="{this.tooltipId}"
-      :aria-hidden="disabled || !showPopper ? 'true' : 'false'"
+      :id="tooltipId"
+      :aria-hidden="!!(disabled || !showPopper)"
       v-show="!disabled && showPopper"
       :class="['el-tooltip__popper', 'is-' + effect, popperClass]"
     >
@@ -26,38 +26,43 @@
 
 <script>
 export default {
-  name: "TooltipOptions",
+  name: 'TooltipOptions',
   props: {
     doDestroy: Function,
     debounceClose: Function,
     setExpectedState: Function,
+    tooltipId: undefined,
     showPopper: Boolean,
     disabled: Boolean,
     content: String,
     effect: {
       type: String,
-      default: "dark",
+      default: 'dark'
     },
     arrowOffset: {
       type: Number,
-      default: 0,
+      default: 0
     },
     popperClass: String,
     transition: {
       type: String,
-      default: "el-fade-in-linear",
-    },
+      default: 'el-fade-in-linear'
+    }
   },
+  mounted() {},
   methods: {
     onMouseenter() {
-      this.setExpectedState(true);
+      this.setExpectedState(true)
     },
     onMouseleave() {
-      this.setExpectedState(false);
-      this.debounceClose();
+      this.setExpectedState(false)
+      this.debounceClose()
     },
-  },
-};
+    afterLeave() {
+      console.log(this.doDestroy)
+    }
+  }
+}
 </script>
 
 <style scoped lang="scss"></style>
